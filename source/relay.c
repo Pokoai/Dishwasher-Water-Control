@@ -3,12 +3,12 @@
 // ???????
 void relay_on()
 {
-	RELAY = 0;
+	GPIO_RELAY = 0;
 }
 
 // ???????
 void relay_off()
 {
-	RELAY = 1;
+	GPIO_RELAY = 1;
 }
 

@@ -426,6 +426,11 @@
               <FileType>5</FileType>
               <FilePath>..\include\relay.h</FilePath>
             </File>
+            <File>
+              <FileName>xpt2046.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\include\xpt2046.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -460,6 +465,11 @@
               <FileName>relay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\relay.c</FilePath>
+            </File>
+            <File>
+              <FileName>xpt2046.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\xpt2046.c</FilePath>
             </File>
           </Files>
         </Group>

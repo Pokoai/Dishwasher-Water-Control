@@ -39,6 +39,7 @@ typedef  char      bool;
 #include "led.h"
 #include "timer.h"
 #include "relay.h"
+#include "xpt2046.h"
 
 
 
