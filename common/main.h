@@ -37,6 +37,7 @@ typedef  char      bool;
 // 注：必须放在类型定义后面
 #include "key.h"
 #include "led.h"
+#include "timer.h"
 
 
 

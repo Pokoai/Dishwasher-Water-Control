@@ -1,14 +1,19 @@
-#include "uart.h"
-#include "string.h"
 #include <stdlib.h>
+#include <string.h>
 
+#include "uart.h"
+
+
+// 初始化
 void uart_init()
 {
 	TMOD = TMOD_VAL;
-	SCON = SCON_VAL;
 	TH1  = TH1_VAL;
 	TL1  = TL1_VAL;
+
+	SCON = SCON_VAL;
 	PCON = PCON_VAL;
+
 	EA   = CONFIG_EA;
 	ES   = CONFIG_ES;
 	TR1  = CONFIG_TR1;
@@ -29,34 +34,37 @@ void uart_init()
 #endif
 }
 
-void uart_send_str(uchar *str)	    // 发送字符串
+// 发送一个字符
+void uart_send_ch(char ch)        
 {
-	while (*str) {
+	TI = 0;
+	SBUF = ch;
+	while ( TI == 0 );
+	TI = 0;
+}
+
+// 发送字符串
+void uart_send_str(char *str)	    
+{
+	while ( *str ) {
 		SBUF = *(str++);
-		while (TI == 0);
+		while ( TI == 0 );
 		TI = 0;
 	}
 }
 
-void uart_send_ch(uchar ch)        // 发送一个字符
-{
-	TI = 0;
-	SBUF = ch;
-	while (TI == 0);
-	TI = 0;
-}
-
-// 非阻塞： 将USART_RX_BUF中的数据读走后USART_FLAG清0，才可以在中断中接收下一次数据
-// 阻塞： 等待USART_FLAG置1才返回
+// 非阻塞：将 USART_RX_BUF 中的数据读走后 USART_FLAG 清0，才可以在中断中接收下一次数据
+// 阻塞： 等待 USART_FLAG 置1才返回
 char* uart_read(char *buf)
 {
 #ifdef UART_BLOCK
-	while (!USART_FLAG);
+	while ( !USART_FLAG );
 #else
-	if (!USART_FLAG) {
+	if ( !USART_FLAG ) {
 		return buf;
 	}
 #endif
+
 	memset(buf, 0, sizeof(buf));
 	strcpy(buf, USART_RX_BUF);
 	USART_FLAG = 0;
@@ -64,16 +72,17 @@ char* uart_read(char *buf)
 	return buf;
 }
 
+// 串口终中断服务程序
 void uart_receive() interrupt 4 using 1
 {
-	uchar res = SBUF;
+	char res = SBUF;
 
-	if (RI && !USART_FLAG) {
-		if (res == '\r') {
+	if ( RI && !USART_FLAG ) {
+		if ( res == '\r' ) {
 			USART_RX_BUF[USART_CUR] = '\0';
 			USART_CUR = 0;
 			USART_FLAG = 1;
-		} else if (res != '\n') {
+		} else if ( res != '\n' ) {
 			USART_RX_BUF[USART_CUR] = res;
 			USART_CUR++;
 		}

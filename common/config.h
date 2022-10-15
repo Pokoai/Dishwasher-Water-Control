@@ -32,7 +32,17 @@ sbit SDA = P0^1;
 
 
 /* ------------------------- timer options --------------------------*/
+#define CONFIG_EA   1    // 总中断开关
 
+#define TMOD_VAL  0x11   // T0、T1均工作在方式1，16位定时器
+
+#define CONFIG_TR0  1    // 定时器0开关
+#define CONFIG_ET0  1    // 中断允许
+#define TH0_VAL  (65535-50000) / 256;   // T0: 50ms
+#define TL0_VAL  (65535-50000) % 256;
+
+#define CONFIG_TR1  1    // 定时器1开关
+#define CONFIG_ET1  1    // 中断允许
 /* ------------------------- timer options --------------------------*/
 
 
@@ -44,7 +54,7 @@ sbit SDA = P0^1;
 #define CONFIG_ES   1   // 串口中断开关
 #define CONFIG_TR1  1   // 定时器1开关
 
-//#define CONFIG_11_0592MHz_BAUDRATE_4800
+//#define CONFIG_11_0592MHz_BAUDRATE_4800  // 通信波特率选择
 #define CONFIG_11_0592MHz_BAUDRATE_9600
 //#define CONFIG_11_0592MHz_BAUDRATE_57600
 //#define CONFIG_12MHz_BAUDRATE_4800
@@ -56,7 +66,7 @@ sbit SDA = P0^1;
 #define TL1_VAL    0xF4
 #define PCON_VAL   0x80
 #elif defined (CONFIG_11_0592MHz_BAUDRATE_9600)
-#define TMOD_VAL   0x20
+//#define TMOD_VAL   0x20  // 已在 timer options 定义
 #define SCON_VAL   0x50
 #define TH1_VAL    0xFD
 #define TL1_VAL    0xFD
