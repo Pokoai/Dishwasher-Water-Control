@@ -9,18 +9,21 @@
  */
  
 
-// LED 
-sbit GPIO_LED_1 = P1^0;
-
 // 键盘
 sbit GPIO_KEY_1 = P1^1;         // 独立按键
 #define GPIO_KEY P2             // 矩阵键盘
+
+// LED 
+sbit GPIO_LED_1 = P1^0;
 
 // LCD 1062
 sbit LCD_E   = P2^7;            // 使能信号
 sbit LCD_RS  = P2^6;            // 数据/命令选择端  对应  1/0
 sbit LCD_RW  = P2^5;            // 读/写选择端      对应  1/0
 #define LCD_DATA_BUS P0         // 数据总线
+
+// 继电器
+sbit RELAY = P1^2;
 
 // I2C
 sbit SCL = P0^0;

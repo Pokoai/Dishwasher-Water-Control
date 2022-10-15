@@ -1,0 +1,14 @@
+#include "relay.h"
+
+// ???????
+void relay_on()
+{
+	RELAY = 0;
+}
+
+// ???????
+void relay_off()
+{
+	RELAY = 1;
+}
+

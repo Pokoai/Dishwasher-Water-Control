@@ -38,6 +38,7 @@ typedef  char      bool;
 #include "key.h"
 #include "led.h"
 #include "timer.h"
+#include "relay.h"
 
 
 

@@ -421,6 +421,11 @@
               <FileType>5</FileType>
               <FilePath>..\include\timer.h</FilePath>
             </File>
+            <File>
+              <FileName>relay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\include\relay.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -450,6 +455,11 @@
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>relay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\relay.c</FilePath>
             </File>
           </Files>
         </Group>
