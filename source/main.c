@@ -18,15 +18,18 @@ void init_all()
 	led_off();     // led熄灭
 	relay_off();   // 继电器断开	
 	timer_init();  // 启动定时器
+	LCD_init();	   // LCD1602初始化
 }
 
-
+// 主函数
 void main()
 {	
 	init_all();
 
 	while (1) {
-		if ( key_on ) {
+		LCD_write_str(0, 0, "WaterHight: ");
+
+		if ( key_on ) {  // 按键按下
 			led_flashing();  // 灯闪烁
 			relay_on();		 // 继电器闭合
 			flg = true; 

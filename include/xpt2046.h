@@ -2,7 +2,7 @@
 #define __XPT2046_H__
 
 /*
- * module：AD
+ * module：xpt2046 AD
  * author：Guyue
  * 
  * api：

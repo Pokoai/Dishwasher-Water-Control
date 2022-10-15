@@ -10,30 +10,30 @@
  
 
 // 键盘
-sbit GPIO_KEY_1 = P1^1;         // 独立按键
-#define GPIO_KEY P2             // 矩阵键盘
+sbit GPIO_KEY_1 = P1^0;         // 独立按键
+#define GPIO_KEY P3            // 矩阵键盘
 
 // LED 
-sbit GPIO_LED_1 = P1^0;
+sbit GPIO_LED_1 = P1^1;
 
 // 继电器
 sbit GPIO_RELAY = P1^2;
 
-// LCD 1062
-sbit LCD_E   = P3^7;            // 使能信号
-sbit LCD_RS  = P3^6;            // 数据/命令选择端  对应  1/0
-sbit LCD_RW  = P3^5;            // 读/写选择端      对应  1/0
-#define LCD_DATA_BUS P0         // 数据总线
+// LCD 1602
+sbit LCD_E   = P2^7;            // 使能信号
+sbit LCD_RS  = P2^6;            // 数据/命令选择端  对应  1/0
+sbit LCD_RW  = P2^5;            // 读/写选择端      对应  1/0
+#define LCD_DB P0         // 数据总线
 
 // I2C
-sbit SCL = P0^0;
-sbit SDA = P0^1;
+sbit SCL = P1^3;
+sbit SDA = P1^4;
 
 // xpt2046 AD
-sbit XPT2046_CLK  = P2^7;       // 时钟
-sbit XPT2046_CS   = P2^6;       // 片选
-sbit XPT2046_DIN  = P2^5;       // 模拟输入
-sbit XPT2046_DOUT = P2^4;       // 数字量输出
+sbit XPT2046_CLK  = P2^3;       // 时钟
+sbit XPT2046_CS   = P2^2;       // 片选
+sbit XPT2046_DIN  = P2^1;       // 模拟输入
+sbit XPT2046_DOUT = P2^0;       // 数字量输出
 
 
 // PCF8591
