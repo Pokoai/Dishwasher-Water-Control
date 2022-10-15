@@ -3,7 +3,7 @@
 
 ### 自定义 ###
 *.log
-
+!.vscode/keil-assistant.log
 
 ### Keil ###
 # something maybe need to add
