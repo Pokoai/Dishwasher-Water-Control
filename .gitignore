@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/keil,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=keil,visualstudiocode
 
+### 自定义 ###
+*.log
+
+
 ### Keil ###
 # something maybe need to add
 # *.bat  # generate batch file
