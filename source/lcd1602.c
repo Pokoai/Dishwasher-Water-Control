@@ -61,7 +61,7 @@ void LCD_init()
 }
 
 // 指定位置显示字符，x:0-15  y:0-1
-void LCD_write_char(u8 x, u8 y, char ch)
+void LCD_write_char(u8 x, u8 y, u8 ch)
 {
     u8 pos = 0;
 
@@ -71,7 +71,7 @@ void LCD_write_char(u8 x, u8 y, char ch)
 }
 
 // 指定位置显示字符串，x:0-15  y:0-1
-void LCD_write_str(u8 x, u8 y, const char *str)
+void LCD_write_str(u8 x, u8 y, const u8 *str)
 {
 	u8 pos = 0;  // 初始位置
 	u8 str_len = strlen(str);

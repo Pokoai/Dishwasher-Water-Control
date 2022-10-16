@@ -39,16 +39,17 @@ u16 SPI_Read()
 }
 
 // 获取 AD 转换后的数据
-// cmd -> 0x94: 电位器、 0xD4: NTC、0xA4: 光敏、0xE4: 外部模拟信号
-u16 Read_AD_dat(u8 cmd)
+// cmd -> 0x94:电位器、0xD4:NTC、0xA4:光敏、0xE4:外部模拟信号
+u16 Read_AD_Data(u8 cmd)
 {
     u8 i;
     u16 AD_Value;
 
-    XPT2046_CS = 0;
     XPT2046_CLK = 0;
+    XPT2046_CS = 0;
+    
     SPI_Write(cmd);
-    for ( i = 0; i < 6; i++ );  // 延时等待转换结束
+    for ( i = 6; i > 0; i-- );  // 延时等待转换结束
 
     XPT2046_CLK = 1;    // 发送一个时钟周期，清除 BUSY
     _nop_();
@@ -67,5 +68,7 @@ u16 Read_AD_dat(u8 cmd)
 // 获取水位高度
 u16 get_water_hight()
 {
-    return Read_AD_dat(0xE4);
+    u16 temp = Read_AD_Data(0xE4);
+
+    return temp;
 }

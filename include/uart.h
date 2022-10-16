@@ -16,7 +16,6 @@
 
 #include "main.h"
 
-
 #define USART_REC_LEN     32
 static u8 USART_RX_BUF[USART_REC_LEN];   // 接收缓冲区
 static u16 USART_CUR = 0;                // 记录接收缓存区的下标

@@ -412,11 +412,6 @@
               <FilePath>..\include\key.h</FilePath>
             </File>
             <File>
-              <FileName>uart.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\include\uart.h</FilePath>
-            </File>
-            <File>
               <FileName>timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\include\timer.h</FilePath>
@@ -455,11 +450,6 @@
               <FileName>key.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\key.c</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\source\uart.c</FilePath>
             </File>
             <File>
               <FileName>timer.c</FileName>

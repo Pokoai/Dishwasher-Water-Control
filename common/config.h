@@ -10,13 +10,13 @@
  
 
 // 键盘
-sbit GPIO_KEY_1 = P1^0;         // 独立按键
+sbit GPIO_KEY_1 = P1^0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // 独立按键
 #define GPIO_KEY P3            // 矩阵键盘
-
+                                                                                                                                 
 // LED 
 sbit GPIO_LED_1 = P1^1;
 
-// 继电器
+// 继电器                                                                                                           
 sbit GPIO_RELAY = P1^2;
 
 // LCD 1602

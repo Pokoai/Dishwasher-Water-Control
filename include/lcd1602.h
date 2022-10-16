@@ -17,8 +17,8 @@
 
 
 extern void LCD_init();
-extern void LCD_write_char(u8 x, u8 y, char ch);
-extern void LCD_write_str(u8 x, u8 y, char *str);
+extern void LCD_write_char(u8 x, u8 y, u8 ch);
+extern void LCD_write_str(u8 x, u8 y, u8 *str);
 #define LCD_clear()     (LCD_write_cmd(0x01))     //清屏
 
 
