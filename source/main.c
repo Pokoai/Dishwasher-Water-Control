@@ -40,11 +40,12 @@ void main()
 		data_pros();  // 数据处理
 
 		// 经测试，水位数值大于2000，则接触到水
-		if ( water_hight > 2000 ) {
+		if ( water_hight > 1900 ) {
 			relay_off();  // 继电器断开，常闭电磁阀关闭，即停止上水
 			relay_is_on = false;  // 清空标志位
 
 			LCD_write_str(0, 0, "Water FULL!");
+			beep_on();		 // 蜂鸣器响报警
 			led_flashing();  // 灯闪烁，水满报警
 		} else {
 			LCD_write_str(0, 0, "Water EMPTY!");  // 为了简便，只显示两种状态
@@ -53,8 +54,6 @@ void main()
 		// 显示实际水位数值
 		LCD_write_str(0, 1, "Real Hight: ");
 		LCD_write_str(12, 1, disp);
-
-		
 	}
 }
 

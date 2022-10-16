@@ -19,6 +19,9 @@ sbit GPIO_LED_1 = P1^1;
 // 继电器                                                                                                           
 sbit GPIO_RELAY = P1^2;
 
+// 蜂鸣器
+sbit GPIO_BEEP = P1^3;
+
 // LCD 1602
 sbit LCD_E   = P2^7;            // 使能信号
 sbit LCD_RS  = P2^6;            // 数据/命令选择端  对应  1/0
@@ -26,8 +29,8 @@ sbit LCD_RW  = P2^5;            // 读/写选择端      对应  1/0
 #define LCD_DB P0         // 数据总线
 
 // I2C
-sbit SCL = P1^3;
-sbit SDA = P1^4;
+sbit SCL = P1^4;
+sbit SDA = P1^5;
 
 // xpt2046 AD
 sbit XPT2046_CLK  = P2^3;       // 时钟

@@ -431,6 +431,11 @@
               <FileType>5</FileType>
               <FilePath>..\include\lcd1602.h</FilePath>
             </File>
+            <File>
+              <FileName>beep.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\include\beep.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -470,6 +475,11 @@
               <FileName>lcd1602.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\lcd1602.c</FilePath>
+            </File>
+            <File>
+              <FileName>beep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\beep.c</FilePath>
             </File>
           </Files>
         </Group>
