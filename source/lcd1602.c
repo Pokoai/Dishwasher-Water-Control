@@ -54,10 +54,10 @@ void LCD_init()
 {
     LCD_write_cmd(0x38);     // 显示模式设置
     LCD_write_cmd(0x0C);     // 开显示，不显示光标
-    // LCD_write_cmd(0x08);      // 显示 关闭
+    // LCD_write_cmd(0x08);    // 显示 关闭
     LCD_write_cmd(0x01);     // 清屏
     LCD_write_cmd(0x06);     // 坐标指针自动加1
-    // LED_Write_cmd(0x80);     // 数据指针起点
+    // LED_Write_cmd(0x80);    // 数据指针起点
 }
 
 // 指定位置显示字符，x:0-15  y:0-1

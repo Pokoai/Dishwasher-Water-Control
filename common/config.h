@@ -38,7 +38,6 @@ sbit XPT2046_CS   = P2^2;       // 片选
 sbit XPT2046_DIN  = P2^1;       // 模拟输入
 sbit XPT2046_DOUT = P2^0;       // 数字量输出
 
-
 // PCF8591
 #define AddWr 0x90   // 写数据地址
 #define AddRd 0x91   // 读数据地址

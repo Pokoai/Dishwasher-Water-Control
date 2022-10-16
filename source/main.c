@@ -7,10 +7,11 @@
 #include "main.h"
 
 
-bool key_is_on = false;     // 按键按下标志位
-bool relay_is_on = false;   // 继电器导通标志位
-u16 water_hight = 0;  	    // 水位
-u8 disp[4];  		  	    // water_hight拆分为4个数存入其中
+bool key_is_on = false;      // 按键按下标志位
+bool relay_is_on = false;    // 继电器导通标志位
+bool water_is_full = false;  // 水满标志位
+u16 water_hight = 0;  	     // 水位
+u8 disp[4];  		  	     // water_hight拆分为4个数存入其中
 
 
 // 数据处理
@@ -36,19 +37,22 @@ void init_all()
 void main()
 {	
 	init_all();
+
 	while (1) {
 		data_pros();  // 数据处理
 
 		// 经测试，水位数值大于2000，则接触到水
-		if ( water_hight > 1900 ) {
+		if ( water_hight > 1800 ) {
 			relay_off();  // 继电器断开，常闭电磁阀关闭，即停止上水
-			relay_is_on = false;  // 清空标志位
+			relay_is_on = false;  // 改变继电器标志位
+			water_is_full = true;  // 水满标志位置位
 
 			LCD_write_str(0, 0, "Water FULL!");
 			beep_on();		 // 蜂鸣器响报警
 			led_flashing();  // 灯闪烁，水满报警
 		} else {
-			LCD_write_str(0, 0, "Water EMPTY!");  // 为了简便，只显示两种状态
+			LCD_write_str(0, 0, "Water EMPTY!"); 
+			water_is_full = false;  // 平时水满标志位清空
 		}
 
 		// 显示实际水位数值
@@ -70,7 +74,7 @@ void timer0() interrupt 1
 		TIMER0_CNT = 0;
 		key_is_on = duli_key();  // 更新按键状态
 
-		if ( key_is_on ) {  // 按键按下
+		if ( key_is_on && !water_is_full ) {  // 按键按下且水未满
 			relay_on();  // 打开电磁阀，开始上水
 			relay_is_on = true;  // 继电器导通标志位置位
 		} 
