@@ -10,11 +10,12 @@
  * void led_off()   Ï¨Ãðled
  */
 
+
 #include "main.h"
 
 extern void led_on();
 extern void led_off();
+extern void led_flashing();
 
 
 #endif
-
