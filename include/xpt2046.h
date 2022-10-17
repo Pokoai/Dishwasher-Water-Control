@@ -11,7 +11,7 @@
  * 其中 cmd -> 0x94:电位器；0xD4:NTC；0xA4:光敏；0xE4:外部模拟信号
  */
 
-#include "main.h"
+#include "config.h"
 
 
 extern u16 Read_AD_Data(u8 cmd); 

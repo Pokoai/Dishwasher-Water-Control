@@ -12,7 +12,7 @@
  */
  
 
-#include "main.h"
+#include "config.h"
 
 extern bool duli_key();
 extern u8 key_polling();

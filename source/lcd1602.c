@@ -1,4 +1,7 @@
+#include <string.h>
+
 #include "LCD1602.h"
+
 
 // 延时
 void delay_ms(u16 c)
@@ -88,7 +91,8 @@ void LCD_write_str(u8 x, u8 y, const u8 *str)
 	}
 }
 
-
-
-
-
+// 清屏
+void LCD_clear()
+{
+    LCD_write_cmd(0x01);     
+}

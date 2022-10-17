@@ -8,7 +8,7 @@ void timer_init()
     TH0 = TH0_VAL;
     TL0 = TL0_VAL;
 
-    EA  = CONFIG_EA;
+    // EA  = CONFIG_EA;  // uart_init() 中开启总中断
     ET0 = CONFIG_ET0;
     TR0 = CONFIG_TR0;
 }

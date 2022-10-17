@@ -2,15 +2,15 @@
 #define __BEEP_H__
 
 /*
- * module£º·äÃùÆ÷¿ØÖÆ
- * author£ºGuyue
+ * module: ???
+ * author: Guyue
  * 
- * api£º
- * void beep_on()    ·äÃùÆ÷Ïì
- * void beep_off()   ·äÃùÆ÷Í£
+ * api:
+ * void beep_on()    
+ * void beep_off()   
  */
 
-#include "main.h"
+#include "config.h"
 
 extern void beep_on();
 extern void beep_off();

@@ -387,14 +387,14 @@
           <GroupName>common</GroupName>
           <Files>
             <File>
-              <FileName>main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\common\main.h</FilePath>
-            </File>
-            <File>
               <FileName>config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\common\config.h</FilePath>
+            </File>
+            <File>
+              <FileName>head.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\common\head.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -435,6 +435,11 @@
               <FileName>led.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\include\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\include\uart.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -480,6 +485,11 @@
               <FileName>led.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\led.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\uart.c</FilePath>
             </File>
           </Files>
         </Group>

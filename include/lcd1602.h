@@ -13,13 +13,14 @@
  *
  */
  
-#include "main.h"
+#include "config.h"
 
 
 extern void LCD_init();
 extern void LCD_write_char(u8 x, u8 y, u8 ch);
 extern void LCD_write_str(u8 x, u8 y, u8 *str);
-#define LCD_clear()     (LCD_write_cmd(0x01))     //清屏
+extern void LCD_clear();
+// #define LCD_clear()     (LCD_write_cmd(0x01))     //清屏
 
 
 #endif

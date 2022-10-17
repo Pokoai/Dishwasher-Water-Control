@@ -3,8 +3,8 @@
  * author: Guyue
  * describe: 
  */
- 
-#include "main.h"
+
+#include "head.h"
 
 
 bool key_is_on = false;      // 按键按下标志位
@@ -12,6 +12,8 @@ bool relay_is_on = false;    // 继电器导通标志位
 bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
 u8 disp[4];  		  	     // water_hight拆分为4个数存入其中
+u8 *lcd_dis;				 // lcd第一行显示内容
+u8 *cmd;					 // 串口接收到的命令
 
 
 // 数据处理
@@ -30,7 +32,8 @@ void init_all()
 	led_off();     // led熄灭
 	relay_off();   // 继电器断开	
 	LCD_init();	   // LCD1602初始化
-	timer_init();  // 启动定时器
+	timer_init();  // 定时器初始化
+	uart_init();   // 串口初始化
 }
 
 // 主函数
@@ -50,6 +53,8 @@ void main()
 			LCD_write_str(0, 0, "Water FULL!");
 			beep_on();		 // 蜂鸣器响报警
 			led_flashing();  // 灯闪烁，水满报警
+		} else if ( relay_is_on ) {  // 打开继电器了
+			LCD_write_str(0, 0, "Valve ON..."); 
 		} else {
 			LCD_write_str(0, 0, "Water EMPTY!"); 
 			water_is_full = false;  // 平时水满标志位清空
@@ -58,6 +63,13 @@ void main()
 		// 显示实际水位数值
 		LCD_write_str(0, 1, "Real Hight: ");
 		LCD_write_str(12, 1, disp);
+
+		// 将水位值通过串口发送至上位机
+		uart_write(disp);  
+
+		// 读取串口接收到的数据
+		// cmd = uart_read(cmd);
+		// LCD_write_str(0, 0, cmd); 
 	}
 }
 
@@ -66,18 +78,29 @@ void main()
 void timer0() interrupt 1
 {
     TH0 = TH0_VAL;
-    TL0 = TL0_VAL;
+    TL0 = TL0_VAL; 
 
-	water_hight = get_water_hight();  // 50ms更新一次水位数值
+	// 50ms更新一次水位数值
+	water_hight = get_water_hight();  
 	
+	// 100ms更新一次按键状态
 	if ( 2 == ++TIMER0_CNT ) {  // 100ms
 		TIMER0_CNT = 0;
-		key_is_on = duli_key();  // 更新按键状态
 
+		// 更新按键状态
+		key_is_on = duli_key();  
 		if ( key_is_on && !water_is_full ) {  // 按键按下且水未满
 			relay_on();  // 打开电磁阀，开始上水
 			relay_is_on = true;  // 继电器导通标志位置位
+
+			// LCD_write_str(0, 0, "Valve ON...");  // 主函数中有该函数，中断服务程序中尽量不要再使用同样函数，以免发出冲突
+			// 可借助relay_is_on标志位，在主函数中调用LCD_write_str()
 		} 
+
+		// 读取串口接收到的数据
+		// cmd = uart_read(cmd);
+		// LCD_clear();
+		// LCD_write_str(0, 0, cmd); 
 	}
 
 	// 保险起见，继电器导通上水后开始计时30s，超过此时间则强制关闭电磁阀
@@ -88,6 +111,5 @@ void timer0() interrupt 1
 			relay_is_on = false;  // 清除标志位
 		}
 	}
-	
 }
 

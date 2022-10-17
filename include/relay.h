@@ -2,15 +2,15 @@
 #define __RELAY_H__
 
 /*
- * module£ºµ¥¸öledÁÁÃð¿ØÖÆ
- * author£ºGuyue
+ * moduleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ledï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * authorï¿½ï¿½Guyue
  * 
- * api£º
- * void relay_on()    ¼ÌµçÆ÷±ÕºÏ
- * void relay_off()   ¼ÌµçÆ÷´ò¿ª
+ * apiï¿½ï¿½
+ * void relay_on()    ï¿½Ìµï¿½ï¿½ï¿½ï¿½Õºï¿½
+ * void relay_off()   ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
  */
 
-#include "main.h"
+#include "config.h"
 
 extern void relay_on();
 extern void relay_off();

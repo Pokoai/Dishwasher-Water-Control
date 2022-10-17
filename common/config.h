@@ -1,5 +1,5 @@
-#ifndef __51CONFIG_H__
-#define __51CONFIG_H__
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
 
 /*
  * module: config
@@ -8,6 +8,28 @@
  *
  */
  
+#include <reg52.h>
+
+ 
+
+ // 类型定义
+typedef  unsigned char  uchar;  
+typedef  unsigned int   uint;
+typedef  unsigned long  ulong;
+
+typedef  uchar    u8;
+typedef  uint     u16;
+typedef  ulong    u32;
+typedef  char     int8;
+typedef  int      int16;
+typedef  long     int32;
+
+typedef  char      bool;       
+#define  true       1
+#define  false      0
+	
+
+
 
 // 键盘
 sbit GPIO_KEY_1 = P1^0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // 独立按键
@@ -46,7 +68,7 @@ sbit XPT2046_DOUT = P2^0;       // 数字量输出
 /* ------------------------- timer options --------------------------*/
 #define CONFIG_EA   1    // 总中断开关
 
-#define TMOD_VAL  0x11   // T0、T1均工作在方式1，16位定时器
+#define TMOD_VAL  0x21   // T0工作在方式1: 16位定时器, T1工作在方式2: 8位自动重装定时器
 
 #define CONFIG_TR0  1    // 定时器0开关
 #define CONFIG_ET0  1    // 中断允许
@@ -55,6 +77,8 @@ sbit XPT2046_DOUT = P2^0;       // 数字量输出
 
 #define CONFIG_TR1  1    // 定时器1开关
 #define CONFIG_ET1  1    // 中断允许
+// #define TH0_VAL  (65535-50000) / 256;   // 在 uart option 中根据选项有不同定义
+// #define TL0_VAL  (65535-50000) % 256;
 /* ------------------------- timer options --------------------------*/
 
 
@@ -64,7 +88,7 @@ sbit XPT2046_DOUT = P2^0;       // 数字量输出
 
 #define CONFIG_EA   1   // 总中断开关
 #define CONFIG_ES   1   // 串口中断开关
-#define CONFIG_TR1  1   // 定时器1开关
+// #define CONFIG_TR1  1   // 定时器1开关
 
 //#define CONFIG_11_0592MHz_BAUDRATE_4800  // 通信波特率选择
 #define CONFIG_11_0592MHz_BAUDRATE_9600
@@ -72,25 +96,25 @@ sbit XPT2046_DOUT = P2^0;       // 数字量输出
 //#define CONFIG_12MHz_BAUDRATE_4800
 
 #if defined   (CONFIG_11_0592MHz_BAUDRATE_4800)
-#define TMOD_VAL   0x20
+// #define TMOD_VAL   0x20  // 已在 timer options 中定义
 #define SCON_VAL   0x50
 #define TH1_VAL    0xF4
 #define TL1_VAL    0xF4
 #define PCON_VAL   0x80
 #elif defined (CONFIG_11_0592MHz_BAUDRATE_9600)
-//#define TMOD_VAL   0x20  // 已在 timer options 定义
+//#define TMOD_VAL   0x20  
 #define SCON_VAL   0x50
 #define TH1_VAL    0xFD
 #define TL1_VAL    0xFD
 #define PCON_VAL   0x00
 #elif defined (CONFIG_11_0592MHz_BAUDRATE_57600)
-#define TMOD_VAL   0x20
+// #define TMOD_VAL   0x20
 #define SCON_VAL   0x50
 #define TH1_VAL    0xFF
 #define TL1_VAL    0xFF
 #define PCON_VAL   0x80
 #elif defined (CONFIG_12MHz_BAUDRATE_4800)
-#define TMOD_VAL   0x20
+// #define TMOD_VAL   0x20
 #define SCON_VAL   0x50
 #define TH1_VAL    0xF3
 #define TL1_VAL    0xF3
