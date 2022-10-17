@@ -66,10 +66,20 @@ void main()
 		// 将水位值通过串口发送至上位机
 		uart_write(disp);  
 
-		// 读取串口接收到的数据
+		// 读取串口接收到的命令
+		// 若命令为 OPEN#$，则打开电磁阀
 		cmd = uart_read(cmd);
-		LCD_write_str(12, 0, "    ");  // 第一行最后四位清屏，但会导致字符闪烁
-		LCD_write_str(12, 0, cmd); 
+		if ( !strcmp(cmd, "OPEN#") && !water_is_full ) {
+			relay_on();  // 打开电磁阀，开始上水
+			relay_is_on = true;  // 继电器导通标志位置位
+			cmd[0] = '\0';  // 清空cmd字符串
+		} else if ( !strcmp(cmd, "CLOSE#") ) {
+			relay_off();  // 关闭电磁阀
+			relay_is_on = false;
+			cmd[0] = '\0';  // 清空cmd字符串
+		}
+		// LCD_write_str(12, 0, "    ");  // 第一行最后四位清屏，但会导致字符闪烁
+		// LCD_write_str(12, 0, cmd); 
 	}
 }
 
@@ -103,9 +113,9 @@ void timer0() interrupt 1
 		// LCD_write_str(0, 0, cmd); 
 	}
 
-	// 保险起见，继电器导通上水后开始计时30s，超过此时间则强制关闭电磁阀
+	// 保险起见，继电器导通上水后开始计时20s，超过此时间则强制关闭电磁阀
 	if ( relay_is_on ) {  
-		if ( 800 == ++TIMER0_CNT2 ) {  // 经测试，30s需要800次计数
+		if ( 600 == ++TIMER0_CNT2 ) {  // 经测试，30s需要800次计数
 			TIMER0_CNT2 = 0;
 			relay_off(); 
 			relay_is_on = false;  // 清除标志位

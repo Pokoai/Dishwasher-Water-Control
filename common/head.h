@@ -10,7 +10,8 @@
 
 
 // 系统头文件
-#include <reg52.h>     
+#include <reg52.h>  
+#include <string.h>   
 
 
 // 外设头文件（根据实际项目添加）
