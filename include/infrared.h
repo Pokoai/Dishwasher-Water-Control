@@ -26,7 +26,7 @@ static idata u8 IrValue[4];  // 存储红外数据，4个字节，分别为用�
 static u8 Time;              // 存储高电平的持续时间
 
 extern void Ir_init();
-extern u8 Ir_read();
+extern u8* Ir_read();
 
 
 #endif

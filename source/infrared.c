@@ -82,8 +82,10 @@ void Ir_receive() interrupt 0
 }
 
 // 专用的红外数据读取接口
-u8 Ir_read()
+// 之所以返回指针，是因为要在 main()中直接修改 IrValue[2]的值
+// 在 main()中读取 IrValue[2]的值后，就要将其清空
+u8* Ir_read()  
 {
-	return IrValue[2];  // 第3个字节为数据码
+	return &IrValue[2];  // 第3个字节为数据码
 }
 

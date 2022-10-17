@@ -13,7 +13,7 @@ bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
 u8 disp[4];  		  	     // water_hight拆分为4个数存入其中，送到lcd显示
 u8 *uart_cmd;				 // 串口接收到的命令
-u8 ir_cmd = 0;			     // 红外线接收到的命令
+u8 *ir_cmd;			     // 红外线接收到的命令
 u8 ir_disp[4];
 
 
@@ -25,8 +25,8 @@ void data_pros()
 	disp[2] = water_hight % 1000 % 100 / 10 + 48;  // 十位
 	disp[3] = water_hight % 1000 % 100 % 10 + 48;  // 个位	
 
-	ir_disp[0] = ir_cmd / 16;  // 16进展前4位
-	ir_disp[1] = ir_cmd % 16;  // 16进展后4位
+	ir_disp[0] = *ir_cmd / 16;  // 16进展前4位
+	ir_disp[1] = *ir_cmd % 16;  // 16进展后4位
 	ir_disp[2] = '\H';
 
 	// 转换为ACSII码
@@ -93,15 +93,15 @@ void main()
 		ir_cmd = Ir_read();
 		uart_cmd = uart_read(uart_cmd);  // 统一放到定时器0中断服务函数中
 
-		if ( ( ir_cmd == 71 || !strcmp(uart_cmd, "OPEN") ) && !water_is_full ) {
+		if ( ( *ir_cmd == 71 || !strcmp(uart_cmd, "OPEN") ) && !water_is_full ) {
 			relay_on();  		 // 打开电磁阀，开始上水
 			relay_is_on = true;  // 继电器导通标志位置位
-			ir_cmd = 0;  		 // 清空Ir命令
+			*ir_cmd = 0;  		 // 清空Ir命令
 			uart_cmd[0] = '\0';  // 清空串口命令
-		} else if ( ir_cmd == 69 || !strcmp(uart_cmd, "CLOSE") ) {
+		} else if ( *ir_cmd == 69 || !strcmp(uart_cmd, "CLOSE") ) {
 			relay_off();  		 // 关闭电磁阀
 			relay_is_on = false; // 继电器导通标志位清0
-			ir_cmd = 0;  		 // 清空Ir命令
+			*ir_cmd = 0;  		 // 清空Ir命令
 			uart_cmd[0] = '\0';  // 清空串口命令
 			TIMER0_CNT2 = 0;     // 只要关闭电磁阀，20s计时位则清0
 		}
