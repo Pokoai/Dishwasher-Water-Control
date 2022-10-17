@@ -95,9 +95,9 @@ char* uart_read(char *buf)
 #endif
 
 	// 将 USART_RX_BUF[] 中数据复制到 buf
-	memset(buf, 0, sizeof(USART_RX_BUF));
-	strcpy(buf, USART_RX_BUF);
-	USART_FLAG = 0;  // USART_RX_BUF[] 中数据已经另存到buf中，现在可以开始接收下一次数据了
+	// memset(buf, 0, sizeof(USART_RX_BUF));
+	// strcpy(buf, USART_RX_BUF);
+	// USART_FLAG = 0;  // USART_RX_BUF[] 中数据已经另存到buf中，现在可以开始接收下一次数据了
 
 	return buf;
 }

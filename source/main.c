@@ -13,6 +13,8 @@ bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
 u8 disp[4];  		  	     // water_hight拆分为4个数存入其中，送到lcd显示
 u8 *cmd;					 // 串口接收到的命令
+u8 ir_cmd = 0;					 // 红外线接收到的命令
+u8 ir_disp[4];
 
 
 // 数据处理
@@ -22,6 +24,20 @@ void data_pros()
 	disp[1] = water_hight % 1000 / 100 + 48;  // 百位
 	disp[2] = water_hight % 1000 % 100 / 10 + 48;  // 十位
 	disp[3] = water_hight % 1000 % 100 % 10 + 48;  // 个位	
+
+	ir_disp[0] = ir_cmd / 16;  // 16进展前4位
+	ir_disp[1] = ir_cmd % 16;  // 16进展后4位
+	// 转换为ACSII码
+	if ( ir_disp[0] < 10 ) {  // 是数字
+		ir_disp[0] += 48;
+	} else {
+		ir_disp[0] += 55;  // 大写字母
+	}
+	if ( ir_disp[1] < 10 ) {  // 是数字
+		ir_disp[1] += 48;
+	} else {
+		ir_disp[1] += 55;  // 大写字母
+	}
 }
 
 
@@ -33,6 +49,7 @@ void init_all()
 	LCD_init();	   // LCD1602初始化
 	timer_init();  // 定时器初始化
 	uart_init();   // 串口初始化
+	Ir_init(); 	   // 红外线接收初始化
 }
 
 // 主函数
@@ -80,6 +97,8 @@ void main()
 		}
 		// LCD_write_str(12, 0, "    ");  // 第一行最后四位清屏，但会导致字符闪烁
 		// LCD_write_str(12, 0, cmd); 
+
+		LCD_write_str(14, 0, ir_disp);  // 显示红外线值 
 	}
 }
 
@@ -90,8 +109,9 @@ void timer0() interrupt 1
     TH0 = TH0_VAL;
     TL0 = TL0_VAL; 
 
-	// 50ms更新一次水位数值
+	// 50ms更新一次水位数值、红外线命令
 	water_hight = get_water_hight();  
+	ir_cmd = Ir_read();
 	
 	// 100ms更新一次按键状态
 	if ( 2 == ++TIMER0_CNT ) {  // 100ms

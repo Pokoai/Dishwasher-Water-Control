@@ -30,7 +30,6 @@ typedef  char      bool;
 	
 
 
-
 // 键盘
 sbit GPIO_KEY_1 = P1^0;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // 独立按键
 #define GPIO_KEY P3            // 矩阵键盘
@@ -48,17 +47,24 @@ sbit GPIO_BEEP = P1^3;
 sbit LCD_E   = P2^7;            // 使能信号
 sbit LCD_RS  = P2^6;            // 数据/命令选择端  对应  1/0
 sbit LCD_RW  = P2^5;            // 读/写选择端      对应  1/0
-#define LCD_DB P0         // 数据总线
+#define LCD_DB P0               // 数据总线
 
-// I2C
-sbit SCL = P1^4;
-sbit SDA = P1^5;
+// Ifr
+sbit IRIN = P3^2;       // 数据线接在外部中断P3.2口上
+#define CONFIG_IT0   1  // 下降沿触发
+#define CONFIG_EX0   1  // 打开外部中断0允许
+#define CONFIG_EA    1  // 打开总中断
+#define IRIN_VAL  1     // 端口初始化为高电平
 
 // xpt2046 AD
 sbit XPT2046_CLK  = P2^3;       // 时钟
 sbit XPT2046_CS   = P2^2;       // 片选
 sbit XPT2046_DIN  = P2^1;       // 模拟输入
 sbit XPT2046_DOUT = P2^0;       // 数字量输出
+
+// I2C
+sbit SCL = P1^4;
+sbit SDA = P1^5;
 
 // PCF8591
 #define AddWr 0x90   // 写数据地址

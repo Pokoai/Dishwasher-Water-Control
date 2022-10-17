@@ -441,6 +441,11 @@
               <FileType>5</FileType>
               <FilePath>..\include\uart.h</FilePath>
             </File>
+            <File>
+              <FileName>infrared.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\include\infrared.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -490,6 +495,11 @@
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\source\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>infrared.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\source\infrared.c</FilePath>
             </File>
           </Files>
         </Group>
