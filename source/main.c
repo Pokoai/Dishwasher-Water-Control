@@ -12,8 +12,8 @@ bool relay_is_on = false;    // 继电器导通标志位
 bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
 u8 disp[4];  		  	     // water_hight拆分为4个数存入其中，送到lcd显示
-u8 *cmd;					 // 串口接收到的命令
-u8 ir_cmd = 0;					 // 红外线接收到的命令
+u8 *uart_cmd;				 // 串口接收到的命令
+u8 ir_cmd = 0;			     // 红外线接收到的命令
 u8 ir_disp[4];
 
 
@@ -27,6 +27,8 @@ void data_pros()
 
 	ir_disp[0] = ir_cmd / 16;  // 16进展前4位
 	ir_disp[1] = ir_cmd % 16;  // 16进展后4位
+	ir_disp[2] = '\H';
+
 	// 转换为ACSII码
 	if ( ir_disp[0] < 10 ) {  // 是数字
 		ir_disp[0] += 48;
@@ -38,6 +40,8 @@ void data_pros()
 	} else {
 		ir_disp[1] += 55;  // 大写字母
 	}
+
+	
 }
 
 
@@ -71,6 +75,7 @@ void main()
 			led_flashing();  // 灯闪烁，水满报警
 		} else if ( relay_is_on ) {  // 打开继电器了
 			LCD_write_str(0, 0, "Valve ON... "); 
+			water_is_full = false;  // 平时水满标志位清空
 		} else {
 			LCD_write_str(0, 0, "Water EMPTY!"); 
 			water_is_full = false;  // 平时水满标志位清空
@@ -83,22 +88,27 @@ void main()
 		// 将水位值通过串口发送至上位机
 		uart_write(disp);  
 
-		// 读取串口接收到的命令
-		// 若命令为 OPEN#$，则打开电磁阀
-		cmd = uart_read(cmd);
-		if ( !strcmp(cmd, "OPEN#") && !water_is_full ) {
-			relay_on();  // 打开电磁阀，开始上水
+		// 读取红外线值，若为47H（10进制71），则打开电磁阀；若为45H（10进制69），则打开电磁阀
+		// 读取串口接收到的命令，若命令为 OPEN$，则打开电磁阀；若命令为 CLOSE$，则关闭电磁阀
+		ir_cmd = Ir_read();
+		uart_cmd = uart_read(uart_cmd);  // 统一放到定时器0中断服务函数中
+
+		if ( ( ir_cmd == 71 || !strcmp(uart_cmd, "OPEN") ) && !water_is_full ) {
+			relay_on();  		 // 打开电磁阀，开始上水
 			relay_is_on = true;  // 继电器导通标志位置位
-			cmd[0] = '\0';  // 清空cmd字符串
-		} else if ( !strcmp(cmd, "CLOSE#") ) {
-			relay_off();  // 关闭电磁阀
-			relay_is_on = false;
-			cmd[0] = '\0';  // 清空cmd字符串
+			ir_cmd = 0;  		 // 清空Ir命令
+			uart_cmd[0] = '\0';  // 清空串口命令
+		} else if ( ir_cmd == 69 || !strcmp(uart_cmd, "CLOSE") ) {
+			relay_off();  		 // 关闭电磁阀
+			relay_is_on = false; // 继电器导通标志位清0
+			ir_cmd = 0;  		 // 清空Ir命令
+			uart_cmd[0] = '\0';  // 清空串口命令
+			TIMER0_CNT2 = 0;     // 只要关闭电磁阀，20s计时位则清0
 		}
 		// LCD_write_str(12, 0, "    ");  // 第一行最后四位清屏，但会导致字符闪烁
 		// LCD_write_str(12, 0, cmd); 
 
-		LCD_write_str(14, 0, ir_disp);  // 显示红外线值 
+		LCD_write_str(13, 0, ir_disp);  // 显示红外线值 
 	}
 }
 
@@ -109,9 +119,10 @@ void timer0() interrupt 1
     TH0 = TH0_VAL;
     TL0 = TL0_VAL; 
 
-	// 50ms更新一次水位数值、红外线命令
+	// 50ms更新一次水位数值、红外线命令、串口命令
 	water_hight = get_water_hight();  
-	ir_cmd = Ir_read();
+	// ir_cmd = Ir_read();
+	// uart_cmd = uart_read(uart_cmd);
 	
 	// 100ms更新一次按键状态
 	if ( 2 == ++TIMER0_CNT ) {  // 100ms
@@ -122,7 +133,7 @@ void timer0() interrupt 1
 		if ( key_is_on && !water_is_full ) {  // 按键按下且水未满
 			relay_on();  // 打开电磁阀，开始上水
 			relay_is_on = true;  // 继电器导通标志位置位
-
+			
 			// LCD_write_str(0, 0, "Valve ON...");  // 主函数中有该函数，中断服务程序中尽量不要再使用同样函数，以免发出冲突
 			// 可借助relay_is_on标志位，在主函数中调用LCD_write_str()
 		} 
@@ -135,7 +146,7 @@ void timer0() interrupt 1
 
 	// 保险起见，继电器导通上水后开始计时20s，超过此时间则强制关闭电磁阀
 	if ( relay_is_on ) {  
-		if ( 600 == ++TIMER0_CNT2 ) {  // 经测试，30s需要800次计数
+		if ( 600 == ++TIMER0_CNT2 ) {  // 经测试，20s需要600次计数
 			TIMER0_CNT2 = 0;
 			relay_off(); 
 			relay_is_on = false;  // 清除标志位
