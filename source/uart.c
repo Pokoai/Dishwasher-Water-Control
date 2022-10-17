@@ -64,7 +64,7 @@ void uart_receive() interrupt 4 using 1
 
 	// 外部数据到来RI自动被置1，且USART_FLAG为0时，才将数据存储到USART_RX_BUF[]数组中
 	if ( RI && !USART_FLAG ) {  
-		if ( res == 'F' ) {  // 本次字符传送结束标志
+		if ( res == '$' ) {  // 本次字符传送结束标志
 			USART_RX_BUF[USART_CUR] = '\0';
 			USART_CUR = 0;  // 数组下标索引置0，下次到来的数据从头开始存储
 			USART_FLAG = 1;   // 表明本次数据接收完毕，将USART_FLAG置1
@@ -86,9 +86,12 @@ char* uart_read(char *buf)
 	while ( !USART_FLAG );   
 	// 阻塞模式，只有本次数据传送完毕且将USART_RX_BUF[]中数据读走后，USART_FLAG清0，才可以在中断中接收下一次数据
 #else
-	if ( !USART_FLAG ) {  // 这个if条件好像不对，USART_FLAG==1时无法读取数据，不符合现实0
-		return USART_RX_BUF;  // 非阻塞模式，可以直接返回 USART_RX_BUF[]中现存数据
-	}
+	// if ( !USART_FLAG ) {  // 这个if条件好像不对，USART_FLAG==1时无法读取数据，不符合现实0
+	// 	return USART_RX_BUF;  // 非阻塞模式，可以直接返回 USART_RX_BUF[]中现存数据
+	// }
+	USART_FLAG = 0; 
+	return USART_RX_BUF;
+	
 #endif
 
 	// 将 USART_RX_BUF[] 中数据复制到 buf

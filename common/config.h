@@ -84,7 +84,7 @@ sbit XPT2046_DOUT = P2^0;       // 数字量输出
 
 
 /* ------------------------- uart option --------------------------*/
-#define UART_BLOCK      // 以阻塞方式读取数据
+// #define UART_BLOCK      // 以阻塞方式读取数据
 
 #define CONFIG_EA   1   // 总中断开关
 #define CONFIG_ES   1   // 串口中断开关

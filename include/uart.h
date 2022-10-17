@@ -10,7 +10,7 @@
  * void uart_send_ch(char ch)     |  uart_write_ch
  * void uart_send_str(char *str)  |  uart_write_str  |  uart_write
  * char* uart_read(char *buf)     // 专用的读取接口，必须使用这个接口来读取
- * 注：接收串口数据，约定以'\r'作为结束标志
+ * 注：接收串口数据，约定以'$'作为结束标志
  */
 
 

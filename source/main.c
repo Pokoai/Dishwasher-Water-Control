@@ -11,8 +11,7 @@ bool key_is_on = false;      // 按键按下标志位
 bool relay_is_on = false;    // 继电器导通标志位
 bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
-u8 disp[4];  		  	     // water_hight拆分为4个数存入其中
-u8 *lcd_dis;				 // lcd第一行显示内容
+u8 disp[4];  		  	     // water_hight拆分为4个数存入其中，送到lcd显示
 u8 *cmd;					 // 串口接收到的命令
 
 
@@ -54,7 +53,7 @@ void main()
 			beep_on();		 // 蜂鸣器响报警
 			led_flashing();  // 灯闪烁，水满报警
 		} else if ( relay_is_on ) {  // 打开继电器了
-			LCD_write_str(0, 0, "Valve ON..."); 
+			LCD_write_str(0, 0, "Valve ON... "); 
 		} else {
 			LCD_write_str(0, 0, "Water EMPTY!"); 
 			water_is_full = false;  // 平时水满标志位清空
@@ -68,8 +67,9 @@ void main()
 		uart_write(disp);  
 
 		// 读取串口接收到的数据
-		// cmd = uart_read(cmd);
-		// LCD_write_str(0, 0, cmd); 
+		cmd = uart_read(cmd);
+		LCD_write_str(12, 0, "    ");  // 第一行最后四位清屏，但会导致字符闪烁
+		LCD_write_str(12, 0, cmd); 
 	}
 }
 
