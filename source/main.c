@@ -65,7 +65,8 @@ void main()
 		data_pros();  // 数据处理
 
 		// 经测试，水位数值大于2000，则接触到水
-		if ( water_hight > 1800 ) {
+		if ( water_hight > 1900 ) {
+
 			relay_off();  // 继电器断开，常闭电磁阀关闭，即停止上水
 			relay_is_on = false;  // 改变继电器标志位
 			water_is_full = true;  // 水满标志位置位
@@ -144,13 +145,15 @@ void timer0() interrupt 1
 		// LCD_write_str(0, 0, cmd); 
 	}
 
-	// 保险起见，继电器导通上水后开始计时20s，超过此时间则强制关闭电磁阀
+	// 保险起见，继电器导通上水后开始计时1min，超过此时间则强制关闭电磁阀
 	if ( relay_is_on ) {  
-		if ( 600 == ++TIMER0_CNT2 ) {  // 经测试，20s需要600次计数
+		if ( 2500 == ++TIMER0_CNT2 ) {  // 经测试，1min需要1800次计数
 			TIMER0_CNT2 = 0;
 			relay_off(); 
 			relay_is_on = false;  // 清除标志位
 		}
 	}
+
+	
 }
 
