@@ -9,6 +9,7 @@
 
 bool key_is_on = false;      // 按键按下标志位
 bool relay_is_on = false;    // 继电器导通标志位
+// bool alarm_is_on = false;    // 报警标志位    暂时没想到如何使用
 bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
 u8 disp[4];  		  	     // water_hight拆分为4个数存入其中，送到lcd显示
@@ -64,16 +65,21 @@ void main()
 	while (1) {
 		data_pros();  // 数据处理
 
-		// 经测试，水位数值大于2000，则接触到水
+		// 经测试，水位数值大于2100，则接触到水
 		if ( water_hight > 2100 ) {
 			water_is_full = true;  // 水满标志位置位
 			// relay_off();  // 继电器断开，常闭电磁阀关闭，即停止上水
 			// relay_is_on = false;  // 改变继电器标志位
-			// water_hight > 1900 后不立马关闭电磁阀，而是视现实情况，延时一段时间后才关闭
+			// water_hight > 2100 后不立马关闭电磁阀，而是视现实情况，延时一段时间后才关闭
 
 			LCD_write_str(0, 0, "Water FULL!");
-			beep_on();		 // 蜂鸣器响报警
-			led_flashing();  // 灯闪烁，水满报警
+
+			if ( water_hight > 2500 ) {  // 暂时用此方法限制报警
+				beep_on();		 // 蜂鸣器响报警
+				led_flashing();  // 灯闪烁，水满报警
+			}
+			
+			
 		} else if ( relay_is_on ) {  // 打开继电器了
 			LCD_write_str(0, 0, "Valve ON... "); 
 			water_is_full = false;  // 平时水满标志位清空
@@ -154,9 +160,10 @@ void timer0() interrupt 1
 		}
 	}
 
-	// 保险起见，继电器导通上水后开始计时1min，超过此时间则强制关闭电磁阀
+	// 保险起见，继电器导通上水后开始计时2min，超过此时间则强制关闭电磁阀
+	// 实际上水时间：1min33s
 	if ( relay_is_on ) {  
-		if ( 2500 == ++TIMER0_CNT2 ) {  // 经测试，1min需要1800次计数
+		if ( 2500 == ++TIMER0_CNT2 ) {  // 经测试，2min需要2500次计数
 			TIMER0_CNT2 = 0;
 			relay_off(); 
 			relay_is_on = false;  // 清除标志位
