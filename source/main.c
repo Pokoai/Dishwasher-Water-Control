@@ -66,7 +66,7 @@ void main()
 		data_pros();  // 数据处理
 
 		// 经测试，水位数值大于2100，则接触到水
-		if ( water_hight > 2100 ) {
+		if ( water_hight > 2350 ) {
 			water_is_full = true;  // 水满标志位置位
 			// relay_off();  // 继电器断开，常闭电磁阀关闭，即停止上水
 			// relay_is_on = false;  // 改变继电器标志位
@@ -74,7 +74,7 @@ void main()
 
 			LCD_write_str(0, 0, "Water FULL!");
 
-			if ( water_hight > 2500 ) {  // 暂时用此方法限制报警
+			if ( water_hight > 2600 ) {  // 暂时用此方法限制报警
 				beep_on();		 // 蜂鸣器响报警
 				led_flashing();  // 灯闪烁，水满报警
 			}
@@ -151,9 +151,9 @@ void timer0() interrupt 1
 		// LCD_write_str(0, 0, cmd); 
 	}
 
-	// 液位传感器检测到水后，延时2s才关闭电磁阀
+	// 液位传感器检测到水后，延时1.5s才关闭电磁阀
 	if ( water_is_full ) {
-		if ( 40 == ++TIMER0_CNT3 ) {
+		if ( 30 == ++TIMER0_CNT3 ) {
 			TIMER0_CNT3 = 0;
 			relay_off();
 			relay_is_on = false;
