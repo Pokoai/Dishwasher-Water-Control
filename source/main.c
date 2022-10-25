@@ -14,7 +14,7 @@ bool water_is_full = false;  // 水满标志位
 u16 water_hight = 0;  	     // 水位
 u8 disp[4];  		  	     // water_hight拆分为4个数存入其中，送到lcd显示
 u8 *uart_cmd;				 // 串口接收到的命令
-u8 *ir_cmd;			     // 红外线接收到的命令
+u8 *ir_cmd;			     	 // 红外线接收到的命令
 u8 ir_disp[4];
 
 
@@ -66,7 +66,7 @@ void main()
 		data_pros();  // 数据处理
 
 		// 经测试，水位数值大于2100，则接触到水
-		if ( water_hight > 2350 ) {
+		if ( water_hight > 2500 && water_hight < 2700 ) {
 			water_is_full = true;  // 水满标志位置位
 			// relay_off();  // 继电器断开，常闭电磁阀关闭，即停止上水
 			// relay_is_on = false;  // 改变继电器标志位
@@ -74,10 +74,10 @@ void main()
 
 			LCD_write_str(0, 0, "Water FULL!");
 
-			if ( water_hight > 2600 ) {  // 暂时用此方法限制报警
+			// if ( water_hight < 2700 ) {  // 暂时用此方法限制报警，洗完后的水蒸气会使其大于2700
 				beep_on();		 // 蜂鸣器响报警
 				led_flashing();  // 灯闪烁，水满报警
-			}
+			// }
 			
 			
 		} else if ( relay_is_on ) {  // 打开继电器了
@@ -93,19 +93,20 @@ void main()
 		LCD_write_str(12, 1, disp);
 
 		// 将水位值通过串口发送至上位机
-		uart_write(disp);  
+		uart_write(disp);   
+		uart_write_ch(" ");  
 
 		// 读取红外线值，若为47H（10进制71），则打开电磁阀；若为45H（10进制69），则打开电磁阀
 		// 读取串口接收到的命令，若命令为 OPEN$，则打开电磁阀；若命令为 CLOSE$，则关闭电磁阀
-		ir_cmd = Ir_read();
-		uart_cmd = uart_read(uart_cmd);  // 统一放到定时器0中断服务函数中
+		// ir_cmd = Ir_read();
+		// uart_cmd = uart_read(uart_cmd);  // 统一放到定时器0中断服务函数中
 
-		if ( ( *ir_cmd == 71 || !strcmp(uart_cmd, "OPEN") ) && !water_is_full ) {
+		if ( ( *ir_cmd == 71 || !strcmp(uart_cmd, "on") ) && !water_is_full ) {
 			relay_on();  		 // 打开电磁阀，开始上水
 			relay_is_on = true;  // 继电器导通标志位置位
 			*ir_cmd = 0;  		 // 清空Ir命令
 			uart_cmd[0] = '\0';  // 清空串口命令
-		} else if ( *ir_cmd == 69 || !strcmp(uart_cmd, "CLOSE") ) {
+		} else if ( *ir_cmd == 69 || !strcmp(uart_cmd, "off") ) {
 			relay_off();  		 // 关闭电磁阀
 			relay_is_on = false; // 继电器导通标志位清0
 			*ir_cmd = 0;  		 // 清空Ir命令
@@ -128,8 +129,8 @@ void timer0() interrupt 1
 
 	// 50ms更新一次水位数值、红外线命令、串口命令
 	water_hight = get_water_hight();  
-	// ir_cmd = Ir_read();
-	// uart_cmd = uart_read(uart_cmd);
+	ir_cmd = Ir_read();
+	uart_cmd = uart_read(uart_cmd);
 	
 	// 100ms更新一次按键状态
 	if ( 2 == ++TIMER0_CNT ) {  // 100ms
@@ -153,7 +154,7 @@ void timer0() interrupt 1
 
 	// 液位传感器检测到水后，延时1.5s才关闭电磁阀
 	if ( water_is_full ) {
-		if ( 30 == ++TIMER0_CNT3 ) {
+		if ( 300 == ++TIMER0_CNT3 ) {
 			TIMER0_CNT3 = 0;
 			relay_off();
 			relay_is_on = false;
