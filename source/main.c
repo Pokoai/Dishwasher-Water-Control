@@ -74,10 +74,10 @@ void main()
 
 			LCD_write_str(0, 0, "Water FULL!");
 
-			// if ( water_hight < 2700 ) {  // 暂时用此方法限制报警，洗完后的水蒸气会使其大于2700
+			if ( water_hight > 2600 ) {  // 暂时用此方法限制报警，洗完后的水蒸气会使其大于2700
 				beep_on();		 // 蜂鸣器响报警
 				led_flashing();  // 灯闪烁，水满报警
-			// }
+			}
 			
 			
 		} else if ( relay_is_on ) {  // 打开继电器了
@@ -94,7 +94,7 @@ void main()
 
 		// 将水位值通过串口发送至上位机
 		uart_write(disp);   
-		uart_write_ch(" ");  
+		uart_write_ch(' ');  
 
 		// 读取红外线值，若为47H（10进制71），则打开电磁阀；若为45H（10进制69），则打开电磁阀
 		// 读取串口接收到的命令，若命令为 OPEN$，则打开电磁阀；若命令为 CLOSE$，则关闭电磁阀
@@ -154,7 +154,7 @@ void timer0() interrupt 1
 
 	// 液位传感器检测到水后，延时1.5s才关闭电磁阀
 	if ( water_is_full ) {
-		if ( 300 == ++TIMER0_CNT3 ) {
+		if ( 40 == ++TIMER0_CNT3 ) {
 			TIMER0_CNT3 = 0;
 			relay_off();
 			relay_is_on = false;
