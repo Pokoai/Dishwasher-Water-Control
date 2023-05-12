@@ -84,3 +84,4 @@
 *.code-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/keil,visualstudiocode
+project/.vscode/keil-assistant.log
